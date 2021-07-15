@@ -33,4 +33,9 @@ export class DestroyDemoComponent implements OnInit, OnDestroy {
     this.refreshDetailsStorage.set(this.refreshDetails);
   }
 
+  clearLocalStorage() {
+    this.refreshDetailsStorage.clear();
+    this.refreshDetails = new RefreshDetailsModel(1);
+  }
+
 }

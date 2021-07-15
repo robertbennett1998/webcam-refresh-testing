@@ -21,10 +21,13 @@ export class AppComponent implements OnInit, OnDestroy {
   private refreshDetailsStorage : SessionStorage<RefreshDetailsModel> | LocalStorage<RefreshDetailsModel>;
   private refreshDetailsStorageKey: string = 'refresh-details';
 
-  constructor(private userMediaService: UserMediaService) {
-  }
+  // constructor(private userMediaService: UserMediaService) {
+  // }
 
   ngOnInit(): void {
+    // this.userMediaService.getListOfVideoDevices().then(devices => this.videoDevices = devices);
+    // this.userMediaService.getListOfMicrophoneDevices().then(devices => this.audioDevices = devices);
+
     this.showDestroyDetails = false;
     this.refreshDetailsStorage = new LocalStorage<RefreshDetailsModel>(this.refreshDetailsStorageKey)
 
@@ -43,7 +46,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.refreshDetailsStorage.set(this.refreshDetails);
   }
 
-  onToggleDestroyDetailsButtonClick() {
+  clearLocalStorage() {
+    this.refreshDetailsStorage.clear();
+    this.refreshDetails = new RefreshDetailsModel(1);
+  }
+
+  toggleDestroyDetails() {
     this.showDestroyDetails = !this.showDestroyDetails;
   }
 }
