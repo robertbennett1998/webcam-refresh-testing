@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Logger } from './logger-base';
 
 @Injectable({
     providedIn: 'root'
 })
-export class LoggerService implements Logger {
+export class LoggerService {
     constructor() {}
 
     debug(message: string, properties?: any): void {

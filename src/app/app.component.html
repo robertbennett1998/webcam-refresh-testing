@@ -1,3 +1,17 @@
 <h1>
-  {{ refreshDetails.count }}
+  Init Count: {{ refreshDetails.initCount }}
 </h1>
+<h1>
+  Destory Count: {{ refreshDetails.destroyCount }}
+</h1>
+
+<div *ngFor="let item of videoDevices">
+  <app-media-device [device]="item"></app-media-device>
+</div>
+
+<div *ngFor="let item of audioDevices">
+  <app-media-device [device]="item"></app-media-device>
+</div>
+
+<button (click)="onToggleDestroyDetailsButtonClick()">Toggle Destroy Details</button>
+<app-destroy-demo *ngIf="showDestroyDetails"></app-destroy-demo>

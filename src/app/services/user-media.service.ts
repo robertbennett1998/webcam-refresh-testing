@@ -4,8 +4,7 @@ import 'webrtc-adapter';
 import { CallError } from '../errors/call-error.error';
 import { SessionStorage } from '../models/session-storage';
 import { UserMediaDevice } from '../models/user-media-device';
-import { Logger } from './logger-base';
-
+import { LoggerService } from './logger.service';
 @Injectable({
     providedIn: 'root'
 })
@@ -22,7 +21,7 @@ export class UserMediaService {
 
     connectedDevices: BehaviorSubject<UserMediaDevice[]> = new BehaviorSubject([]);
 
-    constructor(private logger: Logger) {
+    constructor(private logger: LoggerService) {
         this.preferredCamCache = new SessionStorage(this.PREFERRED_CAMERA_KEY);
         this.preferredMicCache = new SessionStorage(this.PREFERRED_MICROPHONE_KEY);
 

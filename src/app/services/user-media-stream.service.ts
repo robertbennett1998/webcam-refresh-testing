@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import 'webrtc-adapter';
 import { CallError } from '../errors/call-error.error';
 import { UserMediaDevice } from '../models/user-media-device';
-import { Logger } from './logger-base';
+import { LoggerService } from './logger.service';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ export class UserMediaStreamService {
 
     private requestStream: MediaStream;
 
-    constructor(private logger: Logger) {
+    constructor(private logger: LoggerService) {
         this.navigator.getUserMedia = this.navigator.getUserMedia || this.navigator.webkitGetUserMedia || this.navigator.msGetUserMedia;
     }
 
