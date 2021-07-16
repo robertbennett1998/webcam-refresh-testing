@@ -4,12 +4,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { MediaDeviceComponent } from './media-device/media-device.component';
 import { DestroyDemoComponent } from './destroy-demo/destroy-demo.component';
+import { MicVisualiserComponent } from './mic-visualiser/mic-visualiser.component';
+import { VideoTestComponent } from './video-test/video-test.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MediaDeviceComponent,
-    DestroyDemoComponent
+    DestroyDemoComponent,
+    MicVisualiserComponent,
+    VideoTestComponent
   ],
   imports: [
     BrowserModule

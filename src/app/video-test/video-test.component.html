@@ -1,0 +1,24 @@
+<div>
+  <div>
+    <video style="background-color: black;" width="250" autoplay [srcObject]="videoStream">
+    </video>
+  </div>
+  <div *ngIf="audioStream">
+    <app-mic-visualiser [stream]="audioStream"></app-mic-visualiser>
+  </div>
+</div>
+
+
+<h2>Selected Video Device - {{ selectedVideoDevice?.label }}</h2>
+
+<h2>Selected Audio Device - {{ selectedAudioDevice?.label }}</h2>
+
+<h2>Video Devices</h2>
+<div *ngFor="let item of videoDevices">
+  <app-media-device (onSelected)="videoDeviceSelected($event)" [device]="item"></app-media-device>
+</div>
+
+<h2>Audio Devices</h2>
+<div *ngFor="let item of audioDevices">
+  <app-media-device (onSelected)="audioDeviceSelected($event)" [device]="item"></app-media-device>
+</div>

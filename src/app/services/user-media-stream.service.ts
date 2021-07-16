@@ -41,7 +41,7 @@ export class UserMediaStreamService {
         this.stopStream(this.requestStream);
     }
 
-    private async getStream(): Promise<MediaStream> {
+    private async getStream(): Promise<MediaStream | null> {
         if (this.requestStream) {
             this.stopStream(this.requestStream);
         }
@@ -52,9 +52,11 @@ export class UserMediaStreamService {
             this.logger.error(`${this.loggerPrefix} Could not get media stream`, error);
             this.logger.error(error.name, new CallError(error.name), null);
         }
+
+        return null;
     }
 
-    async getStreamForMic(device: UserMediaDevice): Promise<MediaStream> {
+    async getStreamForMic(device: UserMediaDevice): Promise<MediaStream | null> {
         try {
             if (device) {
                 return await this.navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: device.deviceId } } });
@@ -65,9 +67,11 @@ export class UserMediaStreamService {
             this.logger.error(`${this.loggerPrefix} Could not get audio stream for microphone`, error);
             this.logger.error(error.name, new CallError(error.name), null);
         }
+
+        return null;
     }
 
-    async getStreamForCam(device: UserMediaDevice): Promise<MediaStream> {
+    async getStreamForCam(device: UserMediaDevice): Promise<MediaStream | null> {
         try {
             if (device) {
                 return await this.navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: device.deviceId } } });
@@ -78,6 +82,8 @@ export class UserMediaStreamService {
             this.logger.error(`${this.loggerPrefix} Could not get video stream for camera`, error);
             this.logger.error(error.name, new CallError(error.name), null);
         }
+
+        return null;
     }
 
     private async getDefaultCamStream(): Promise<MediaStream> {

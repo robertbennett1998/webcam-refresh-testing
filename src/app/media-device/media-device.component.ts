@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UserMediaDevice } from '../models/user-media-device';
 
 @Component({
@@ -9,10 +9,15 @@ import { UserMediaDevice } from '../models/user-media-device';
 export class MediaDeviceComponent implements OnInit {
 
   @Input() device: UserMediaDevice;
+  @Output() onSelected: EventEmitter<UserMediaDevice> = new EventEmitter<UserMediaDevice>();
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  selected() {
+    this.onSelected.emit(this.device);
   }
 
 }
