@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { LocalStorage } from './models/local-storage';
 import { RefreshDetailsModel } from './models/refresh-details.model';
 import { SessionStorage } from './models/session-storage';
-import { UnloadListenerService } from './services/unload-listener.service';
+import { UnloadDetectorService } from './services/unload-detector.service';
 
 @Component({
   selector: 'app-root',
@@ -22,11 +22,11 @@ export class AppComponent implements OnInit, OnDestroy {
   private refreshDetailsStorage : SessionStorage<RefreshDetailsModel> | LocalStorage<RefreshDetailsModel>;
   private refreshDetailsStorageKey: string = 'refresh-details';
 
-  constructor(public unloadListenerService: UnloadListenerService) {
+  constructor(public unloadListenerService: UnloadDetectorService) {
   }
 
   ngOnInit(): void {
-    this.unloadListenerService.onShouldUnload.pipe(takeUntil(this.destroyedSubject)).subscribe(() => this.cleanUp());
+    this.unloadListenerService.shouldUnload.pipe(takeUntil(this.destroyedSubject)).subscribe(() => this.cleanUp());
 
     this.showDestroyDetails = false;
     this.refreshDetailsStorage = new LocalStorage<RefreshDetailsModel>(this.refreshDetailsStorageKey)

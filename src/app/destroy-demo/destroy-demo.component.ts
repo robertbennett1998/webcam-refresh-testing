@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { LocalStorage } from '../models/local-storage';
 import { RefreshDetailsModel } from '../models/refresh-details.model';
 import { SessionStorage } from '../models/session-storage';
-import { UnloadListenerService } from '../services/unload-listener.service';
+import { UnloadDetectorService } from '../services/unload-detector.service';
 
 @Component({
   selector: 'app-destroy-demo',
@@ -18,10 +18,10 @@ export class DestroyDemoComponent implements OnInit, OnDestroy {
   private refreshDetailsStorage : SessionStorage<RefreshDetailsModel> | LocalStorage<RefreshDetailsModel>;
   private refreshDetailsStorageKey: string = 'refresh-details-destroy-component';
 
-  constructor(private unloadListenerService: UnloadListenerService) { }
+  constructor(private unloadListenerService: UnloadDetectorService) { }
 
   ngOnInit(): void {
-    this.unloadListenerService.onShouldUnload.pipe(takeUntil(this.destroyedSubject)).subscribe(() => {
+    this.unloadListenerService.shouldUnload.pipe(takeUntil(this.destroyedSubject)).subscribe(() => {
       this.cleanUp();
     })
 
