@@ -21,10 +21,14 @@ export class UnloadListenerService {
     if (this.isDesktop) {
       this.renderer.listen('window', 'beforeunload', () => this.unloadEventSubject.next());
     } else {
-      this.renderer.listen('document', 'visibilityChanged', () => {
-        if (this.renderer.data['visibilityState'] === 'hidden')
+      this.renderer.listen('document', 'visibilitychange', () => {
+        console.log('visibility changed');
+        if (document.hidden)
         {
+          console.log('hidden');
           this.unloadEventSubject.next();
+        } else {
+          console.log('visibile');
         }
       });
     }
