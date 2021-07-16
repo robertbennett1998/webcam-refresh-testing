@@ -1,7 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { LocalStorage } from '../models/local-storage';
 import { RefreshDetailsModel } from '../models/refresh-details.model';
 import { SessionStorage } from '../models/session-storage';
+import { UnloadListenerService } from '../services/unload-listener.service';
 
 @Component({
   selector: 'app-destroy-demo',
@@ -11,12 +14,17 @@ import { SessionStorage } from '../models/session-storage';
 export class DestroyDemoComponent implements OnInit, OnDestroy {
 
   refreshDetails : RefreshDetailsModel;
+  private destroyedSubject = new Subject();
   private refreshDetailsStorage : SessionStorage<RefreshDetailsModel> | LocalStorage<RefreshDetailsModel>;
   private refreshDetailsStorageKey: string = 'refresh-details-destroy-component';
 
-  constructor() { }
+  constructor(private unloadListenerService: UnloadListenerService) { }
 
   ngOnInit(): void {
+    this.unloadListenerService.onShouldUnload.pipe(takeUntil(this.destroyedSubject)).subscribe(() => {
+      this.cleanUp();
+    })
+
     this.refreshDetailsStorage = new LocalStorage<RefreshDetailsModel>(this.refreshDetailsStorageKey)
 
     this.refreshDetails = this.refreshDetailsStorage.get() ?? new RefreshDetailsModel();
@@ -29,8 +37,14 @@ export class DestroyDemoComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.cleanUp();
+  }
+
+  cleanUp() {
     this.refreshDetails.destroyCount++;
     this.refreshDetailsStorage.set(this.refreshDetails);
+    this.destroyedSubject.next();
+    this.destroyedSubject.complete();
   }
 
   clearLocalStorage() {

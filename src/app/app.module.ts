@@ -6,6 +6,7 @@ import { MediaDeviceComponent } from './media-device/media-device.component';
 import { DestroyDemoComponent } from './destroy-demo/destroy-demo.component';
 import { MicVisualiserComponent } from './mic-visualiser/mic-visualiser.component';
 import { VideoTestComponent } from './video-test/video-test.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { VideoTestComponent } from './video-test/video-test.component';
     VideoTestComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
