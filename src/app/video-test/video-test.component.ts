@@ -21,6 +21,10 @@ export class VideoTestComponent implements OnInit {
   constructor(private userMediaService: UserMediaService, private userMediaStreamService : UserMediaStreamService) { }
 
   ngOnInit(): void {
+    this.refreshDevices();
+  }
+
+  refreshDevices() {
     this.userMediaService.getListOfVideoDevices().then(async devices => {
       this.videoDevices = devices;
       this.userMediaService.getPreferredCamera().then(async (cameraDevice) => {
@@ -42,12 +46,20 @@ export class VideoTestComponent implements OnInit {
     this.selectedVideoDevice = device;
     this.userMediaService.updatePreferredCamera(this.selectedVideoDevice);
     this.videoStream = await this.userMediaStreamService.getStreamForCam(this.selectedVideoDevice);
+    if (!this.videoStream) {
+      console.warn("REFRESHING DEVICES VIDEO STREAM NULL");
+      this.refreshDevices();
+    }
   }
 
   async audioDeviceSelected(device : UserMediaDevice) {
     this.selectedAudioDevice = device;
     this.userMediaService.updatePreferredMicrophone(this.selectedAudioDevice);
     this.audioStream = await this.userMediaStreamService.getStreamForMic(this.selectedAudioDevice);
+    if (!this.audioStream) {
+      console.warn("REFRESHING DEVICES AUDIO STREAM NULL");
+      this.refreshDevices();
+    }
   }
 
 }
