@@ -27,6 +27,7 @@ export class UserMediaService {
 
         if (this.navigator?.mediaDevices) {
           this.navigator.mediaDevices.ondevicechange = async () => {
+              await this.setDefaultDevicesInCache();
               await this.updateAvailableDevicesList();
           };
         }

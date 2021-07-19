@@ -57,6 +57,7 @@ export class UserMediaStreamService {
     }
 
     async getStreamForMic(device: UserMediaDevice): Promise<MediaStream | null> {
+      console.log("getStreamForMic - ", device);
         try {
             if (device) {
                 return await this.navigator.mediaDevices.getUserMedia({ audio: { deviceId: { exact: device.deviceId } } });
@@ -72,6 +73,8 @@ export class UserMediaStreamService {
     }
 
     async getStreamForCam(device: UserMediaDevice): Promise<MediaStream | null> {
+      console.log("getStreamForCam - ", device);
+
         try {
             if (device) {
                 return await this.navigator.mediaDevices.getUserMedia({ video: { deviceId: { exact: device.deviceId } } });
