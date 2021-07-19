@@ -23,24 +23,30 @@ export class VideoTestComponent implements OnInit {
   ngOnInit(): void {
     this.userMediaService.getListOfVideoDevices().then(async devices => {
       this.videoDevices = devices;
-      this.selectedVideoDevice = this.videoDevices[0];
-      this.videoStream = await this.userMediaStreamService.getStreamForCam(this.selectedVideoDevice);
+      this.userMediaService.getPreferredCamera().then(async (cameraDevice) => {
+        this.selectedVideoDevice = cameraDevice;
+        this.videoStream = await this.userMediaStreamService.getStreamForCam(this.selectedVideoDevice);
+      });
     });
 
     this.userMediaService.getListOfMicrophoneDevices().then(async devices => {
       this.audioDevices = devices;
-      this.selectedAudioDevice = this.audioDevices[0];
-      this.audioStream = await this.userMediaStreamService.getStreamForMic(this.selectedAudioDevice);
+      this.userMediaService.getPreferredMicrophone().then(async (microphoneDevice) => {
+        this.selectedAudioDevice = microphoneDevice;
+        this.audioStream = await this.userMediaStreamService.getStreamForMic(this.selectedAudioDevice);
+      });
     });
   }
 
   async videoDeviceSelected(device : UserMediaDevice) {
     this.selectedVideoDevice = device;
+    this.userMediaService.updatePreferredCamera(this.selectedVideoDevice);
     this.videoStream = await this.userMediaStreamService.getStreamForCam(this.selectedVideoDevice);
   }
 
   async audioDeviceSelected(device : UserMediaDevice) {
     this.selectedAudioDevice = device;
+    this.userMediaService.updatePreferredMicrophone(this.selectedAudioDevice);
     this.audioStream = await this.userMediaStreamService.getStreamForMic(this.selectedAudioDevice);
   }
 
