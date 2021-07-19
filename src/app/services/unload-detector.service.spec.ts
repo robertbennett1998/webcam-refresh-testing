@@ -1,6 +1,7 @@
 import { Renderer2, RendererFactory2 } from "@angular/core";
-import { fakeAsync } from "@angular/core/testing";
+import { fakeAsync, flush } from "@angular/core/testing";
 import { DeviceDetectorService } from "ngx-device-detector";
+import { LoggerService } from "./logger.service";
 import { UnloadDetectorService } from "./unload-detector.service";
 
 class Renderer2Mock {
@@ -22,10 +23,12 @@ describe('UnloadDetectorService', () => {
   let deviceDetectorServiceSpy : jasmine.SpyObj<DeviceDetectorService>;
   let renderer2FactorySpy : jasmine.SpyObj<RendererFactory2>;
   let renderer2Mock : Renderer2Mock;
+  let loggerSpy : jasmine.SpyObj<LoggerService>;
 
   beforeEach(() => {
     deviceDetectorServiceSpy = jasmine.createSpyObj<DeviceDetectorService>('DeviceDetectorService', ['isDesktop']);
     renderer2FactorySpy = jasmine.createSpyObj<RendererFactory2>('RendererFactory2', ['createRenderer']);
+    loggerSpy = jasmine.createSpyObj<LoggerService>('LoggerService', ['info']);
 
     renderer2Mock = new Renderer2Mock();
     spyOn(renderer2Mock, 'listen').and.callThrough();
@@ -36,7 +39,7 @@ describe('UnloadDetectorService', () => {
   describe('when on desktop', () => {
     beforeEach(() => {
       deviceDetectorServiceSpy.isDesktop.and.returnValue(true);
-      service = new UnloadDetectorService(deviceDetectorServiceSpy, renderer2FactorySpy);
+      service = new UnloadDetectorService(deviceDetectorServiceSpy, renderer2FactorySpy, loggerSpy);
     });
 
     it('should create', () => {
@@ -58,6 +61,7 @@ describe('UnloadDetectorService', () => {
 
       // Act
       renderer2Mock.beforeUnloadCallback(undefined);
+      flush();
 
       // Assert
       expect(wasCalled).toBeTrue();
@@ -67,7 +71,7 @@ describe('UnloadDetectorService', () => {
   describe('when NOT on desktop', () => {
     beforeEach(() => {
       deviceDetectorServiceSpy.isDesktop.and.returnValue(false);
-      service = new UnloadDetectorService(deviceDetectorServiceSpy, renderer2FactorySpy);
+      service = new UnloadDetectorService(deviceDetectorServiceSpy, renderer2FactorySpy, loggerSpy);
     });
 
     it('should create', () => {
@@ -89,6 +93,7 @@ describe('UnloadDetectorService', () => {
 
       // Act
       renderer2Mock.visibiltyChangeCallback(undefined);
+      flush();
 
       // Assert
       expect(wasCalled).toBeTrue();
